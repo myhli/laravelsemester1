@@ -2,67 +2,77 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Student;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(): View
     {
-        $students = Student::all();
+        $title = 'Students';
 
-        return view('admin.student.index', compact('students'));
-    }
+        $students = [
+            [
+                'nis' => '20260001',
+                'name' => 'Ahmad Fauzan',
+                'class' => 'XI PPLG 1',
+                'status' => 'Active',
+            ],
+            [
+                'nis' => '20260002',
+                'name' => 'Muhammad Rizky',
+                'class' => 'XI PPLG 2',
+                'status' => 'Active',
+            ],
+            [
+                'nis' => '20260003',
+                'name' => 'Bagus Setiawan',
+                'class' => 'XI PPLG 1',
+                'status' => 'Active',
+            ],
+            [
+                'nis' => '20260004',
+                'name' => 'Dimas Pratama',
+                'class' => 'X PPLG 1',
+                'status' => 'Inactive',
+            ],
+            [
+                'nis' => '20260005',
+                'name' => 'Rizky Ramadhan',
+                'class' => 'X PPLG 2',
+                'status' => 'Active',
+            ],
+            [
+                'nis' => '20260006',
+                'name' => 'Siti Nurhaliza',
+                'class' => 'XI PPLG 1',
+                'status' => 'Active',
+            ],
+            [
+                'nis' => '20260007',
+                'name' => 'Aditya Pratama',
+                'class' => 'X PPLG 2',
+                'status' => 'Inactive',
+            ],
+            [
+                'nis' => '20260008',
+                'name' => 'Fajar Nugroho',
+                'class' => 'XI PPLG 2',
+                'status' => 'Active',
+            ],
+            [
+                'nis' => '20260009',
+                'name' => 'Hendra Setiawan',
+                'class' => 'X PPLG 1',
+                'status' => 'Active',
+            ],
+            [
+                'nis' => '06259',
+                'name' => 'Irham mada Izzatila',
+                'class' => 'XI PPLG 2',
+                'status' => 'Active',
+            ],
+        ];
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return view('admin.student', compact('title', 'students'));
     }
 }
