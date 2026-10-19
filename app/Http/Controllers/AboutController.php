@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\Request;
 
 class AboutController extends Controller
 {
@@ -14,6 +13,12 @@ class AboutController extends Controller
             'name' => 'Irham mada izzatila',
             'github' => 'github.com/myhli',
         ];
+
         return view('admin.about', compact('title', 'content'));
+    }
+
+    public function adminabout(): View
+    {
+        return $this->index();
     }
 }

@@ -36,10 +36,9 @@
             <div class="w-full sm:w-auto">
                 <select id="class-filter-select" class="w-full sm:w-auto bg-white border border-gray-200 text-gray-700 text-sm rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     <option selected value="--Semua Kelas--">--Semua Kelas--</option>
-                    <option value="X PPLG 1">X PPLG 1</option>
-                    <option value="X PPLG 2">X PPLG 2</option>
-                    <option value="XI PPLG 1">XI PPLG 1</option>
-                    <option value="XI PPLG 2">XI PPLG 2</option>
+                    @foreach ($students->pluck('classroom')->unique()->sort() as $class)
+                        <option value="{{ $class }}">{{ $class }}</option>
+                    @endforeach
                 </select>
             </div>
         </div>
