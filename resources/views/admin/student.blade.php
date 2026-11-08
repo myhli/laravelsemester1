@@ -1,83 +1,113 @@
 <x-admin.layout>
-    {{-- Header Section --}}
-    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
+    <div class="mb-6 flex justify-between items-end">
         <div>
-            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
-                {{ $title ?? 'Students' }}
+            <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">
+               {{ $title ?? 'Students' }}
             </h1>
-            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                Kelola data siswa.
+            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+              {{ $subtitle ?? 'Kelola data siswa.' }}
             </p>
-        </div>
-        <div>
-            <button type="button" class="inline-flex items-center justify-center px-4 py-2.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none transition-colors">
-                <span class="mr-1.5 font-bold text-base leading-none">+</span> Tambah Siswa
-            </button>
         </div>
     </div>
 
-    {{-- Main Card --}}
-    <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-5 sm:p-6">
-        {{-- Search and Filter Controls --}}
-        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
-            <div class="relative w-full max-w-md">
-                <div class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-gray-400">
-                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                    </svg>
-                </div>
-                <input
-                    type="text"
-                    id="table-search-students"
-                    class="block w-full pl-10 pr-4 py-2 text-sm text-gray-900 border border-gray-200 rounded-xl bg-gray-50/50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Cari nama atau NIS..."
-                />
+    <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+
+        <!-- Table Header Control (Search & Buttons) -->
+        <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
+
+            <!-- Search Input -->
+            <div class="w-full md:w-1/2">
+                <form class="flex items-center">
+                    <label for="simple-search" class="sr-only">Search</label>
+                    <div class="relative w-full">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                            </svg>
+                        </div>
+                        <input type="text" id="simple-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Cari siswa atau NIS..." required="">
+                    </div>
+                </form>
             </div>
-            <div class="w-full sm:w-auto">
-                <select id="class-filter-select" class="w-full sm:w-auto bg-white border border-gray-200 text-gray-700 text-sm rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    <option selected value="--Semua Kelas--">--Semua Kelas--</option>
-                    @foreach ($students->pluck('classroom')->unique()->sort() as $class)
-                        <option value="{{ $class }}">{{ $class }}</option>
-                    @endforeach
-                </select>
+
+            <!-- Buttons Action Group -->
+            <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
+
+                <!-- Add Student Button -->
+                <button type="button" class="flex items-center justify-center text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                    <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
+                    </svg>
+                    Tambah Siswa
+                </button>
+
+                <!-- Filter Button -->
+                <button id="filterDropdownButton" data-dropdown-toggle="filterDropdown" class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" type="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="h-4 w-4 mr-2 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clip-rule="evenodd" />
+                    </svg>
+                    Filter Kelas
+                </button>
+
+                <!-- Filter Dropdown Content (Diubah ke PPLG) -->
+                <div id="filterDropdown" class="z-10 hidden w-48 p-3 bg-white rounded-lg shadow dark:bg-gray-700">
+                    <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">Pilih Kelas</h6>
+                    <ul class="space-y-2 text-sm" aria-labelledby="filterDropdownButton">
+                        <li class="flex items-center">
+                            <input id="pplg1" type="checkbox" value="X PPLG 1" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                            <label for="pplg1" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">X PPLG 1</label>
+                        </li>
+                        <li class="flex items-center">
+                            <input id="pplg2" type="checkbox" value="X PPLG 2" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                            <label for="pplg2" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">X PPLG 2</label>
+                        </li>
+                        <li class="flex items-center">
+                            <input id="xipplg1" type="checkbox" value="XI PPLG 1" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                            <label for="xipplg1" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">XI PPLG 1</label>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
 
-        {{-- Table --}}
         <div class="overflow-x-auto">
-            <table class="w-full text-sm text-left">
-                <thead class="text-xs font-semibold text-gray-700 uppercase border-b border-gray-100 dark:text-gray-300 dark:border-gray-700">
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                        <th scope="col" class="py-3 px-4 text-left w-16">NO</th>
-                        <th scope="col" class="py-3 px-4 text-left">NAME</th>
-                        <th scope="col" class="py-3 px-4 text-left">NIS</th>
-                        <th scope="col" class="py-3 px-4 text-left">CLASS</th>
-                        <th scope="col" class="py-3 px-4 text-left">STATUS</th>
+                        <th scope="col" class="px-4 py-3 w-12 text-center">No</th>
+                        <th scope="col" class="px-4 py-3">NIS</th>
+                        <th scope="col" class="px-4 py-3">Nama Siswa</th>
+                        <th scope="col" class="px-4 py-3">Kelas</th>
+                        <th scope="col" class="px-4 py-3">Alamat</th> <!-- Tambahan -->
+                        <th scope="col" class="px-4 py-3 text-center">Status</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
-                    @foreach ($students as $index => $student)
-                        <tr class="hover:bg-gray-50/60 dark:hover:bg-gray-700/40 transition-colors">
-                            <td class="py-3.5 px-4 text-gray-500 dark:text-gray-400">
-                                {{ $index + 1 }}
+                <tbody>
+                    @foreach ($students as $student)
+                        <tr class="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            <td class="px-4 py-3 text-center font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {{ $loop->iteration }}
                             </td>
-                            <td class="py-3.5 px-4 text-gray-800 dark:text-gray-100 font-normal">
-                                {{ $student['name'] }}
+                            <td class="px-4 py-3 font-semibold text-gray-900 dark:text-white">
+                                {{ $student->nis }}
                             </td>
-                            <td class="py-3.5 px-4 text-gray-500 dark:text-gray-400">
-                                {{ $student['nis'] }}
+                            <td class="px-4 py-3 font-medium text-gray-900 dark:text-white">
+                                {{ $student->name }}
                             </td>
-                            <td class="py-3.5 px-4 text-gray-600 dark:text-gray-300">
-                                {{ $student['class'] }}
+                            <td class="px-4 py-3">
+                                {{ $student->classroom->name}}
                             </td>
-                            <td class="py-3.5 px-4">
-                                @if (strtolower($student['status'] ?? 'active') === 'active')
-                                    <span class="inline-block px-3 py-1 text-xs font-medium rounded-full bg-emerald-50 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400">
-                                        Active
+                            <td class="px-4 py-3">
+                                {{ $student->address }}
+                            </td>
+                            <td class="px-4 py-3 text-center">
+                                @if(isset($student->status) && $student->status == 'Inactive')
+                                    <span class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300">
+                                        Inactive
                                     </span>
                                 @else
-                                    <span class="inline-block px-3 py-1 text-xs font-medium rounded-full bg-rose-50 text-rose-600 dark:bg-rose-950/50 dark:text-rose-400">
-                                        Inactive
+                                    <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
+                                        Active
                                     </span>
                                 @endif
                             </td>
@@ -87,35 +117,4 @@
             </table>
         </div>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const searchInput = document.getElementById('table-search-students');
-            const classFilter = document.getElementById('class-filter-select');
-            const rows = document.querySelectorAll('tbody tr');
-
-            function filterTable() {
-                const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
-                const selectedClass = classFilter ? classFilter.value : '--Semua Kelas--';
-
-                rows.forEach(row => {
-                    const name = row.children[1]?.textContent.toLowerCase() || '';
-                    const nis = row.children[2]?.textContent.toLowerCase() || '';
-                    const className = row.children[3]?.textContent.trim() || '';
-
-                    const matchesQuery = !query || name.includes(query) || nis.includes(query);
-                    const matchesClass = selectedClass === '--Semua Kelas--' || className === selectedClass;
-
-                    row.style.display = (matchesQuery && matchesClass) ? '' : 'none';
-                });
-            }
-
-            if (searchInput) {
-                searchInput.addEventListener('input', filterTable);
-            }
-            if (classFilter) {
-                classFilter.addEventListener('change', filterTable);
-            }
-        });
-    </script>
 </x-admin.layout>

@@ -2,27 +2,23 @@
 
 namespace App\Models;
 
+use Database\Factories\StudentFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
 {
+    /** @use HasFactory<StudentFactory> */
     use HasFactory;
 
+    protected $with = ['classroom'];
+
     protected $fillable = [
-        'nis',
-        'name',
-        'classroom',
-        'status',
+        'name', 'nis', 'classroom_id', 'address',
     ];
 
-    public function getClassAttribute(): ?string
+    public function classroom()
     {
-        return $this->classroom;
-    }
-
-    public function getKeadaanAttribute(): ?string
-    {
-        return $this->status;
+        return $this->belongsTo(Classroom::class, 'classroom_id');
     }
 }

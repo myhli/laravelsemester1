@@ -7,8 +7,15 @@ use Illuminate\Database\Seeder;
 
 class ClassroomSeeder extends Seeder
 {
+    /**
+     * Run the database seeds.
+     */
     public function run(): void
     {
-        Classroom::factory(3)->create();
+        Classroom::factory(10)->create();
+
+        $this->call([
+            StudentSeeder::class,
+        ]);
     }
 }
