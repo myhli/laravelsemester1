@@ -10,6 +10,12 @@
         </div>
     </div>
 
+    @if (session('success'))
+        <div class="mb-4 p-4 text-sm text-green-800 rounded-lg bg-green-50 border border-green-200" role="alert">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
 
         <!-- Table Header Control (Search & Buttons) -->
@@ -34,7 +40,7 @@
             <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
 
                 <!-- Add Student Button -->
-                <button type="button" class="flex items-center justify-center text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                <button type="button" data-modal-target="createStudentModal" data-modal-toggle="createStudentModal" class="flex items-center justify-center text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                     <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
                     </svg>
@@ -49,17 +55,17 @@
                     Filter Kelas
                 </button>
 
-                <!-- Filter Dropdown Content (Diubah ke PPLG) -->
+                <!-- Filter Dropdown Content -->
                 <div id="filterDropdown" class="z-10 hidden w-48 p-3 bg-white rounded-lg shadow dark:bg-gray-700">
                     <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">Pilih Kelas</h6>
                     <ul class="space-y-2 text-sm" aria-labelledby="filterDropdownButton">
                         <li class="flex items-center">
-                            <input id="pplg1" type="checkbox" value="X PPLG 1" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                            <label for="pplg1" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">X PPLG 1</label>
+                            <input id="xanimasi1" type="checkbox" value="X ANIMASI 1" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                            <label for="xanimasi1" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">X ANIMASI 1</label>
                         </li>
                         <li class="flex items-center">
-                            <input id="pplg2" type="checkbox" value="X PPLG 2" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                            <label for="pplg2" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">X PPLG 2</label>
+                            <input id="xdkv1" type="checkbox" value="X DKV 1" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                            <label for="xdkv1" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">X DKV 1</label>
                         </li>
                         <li class="flex items-center">
                             <input id="xipplg1" type="checkbox" value="XI PPLG 1" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
@@ -78,7 +84,7 @@
                         <th scope="col" class="px-4 py-3">NIS</th>
                         <th scope="col" class="px-4 py-3">Nama Siswa</th>
                         <th scope="col" class="px-4 py-3">Kelas</th>
-                        <th scope="col" class="px-4 py-3">Alamat</th> <!-- Tambahan -->
+                        <th scope="col" class="px-4 py-3">Alamat</th>
                         <th scope="col" class="px-4 py-3 text-center">Status</th>
                     </tr>
                 </thead>
@@ -117,4 +123,18 @@
             </table>
         </div>
     </div>
+
+    {{-- Modal Create Student --}}
+    @include('admin.student.create', ['classrooms' => $classrooms])
+
+    @if ($errors->any())
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const modal = document.getElementById('createStudentModal');
+                if (modal && window.Modal) {
+                    new window.Modal(modal).show();
+                }
+            });
+        </script>
+    @endif
 </x-admin.layout>

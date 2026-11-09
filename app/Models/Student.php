@@ -14,7 +14,7 @@ class Student extends Model
     protected $with = ['classroom'];
 
     protected $fillable = [
-        'name', 'nis', 'classroom_id', 'address',
+        'name', 'nis', 'classroom_id', 'address', 'status',
     ];
 
     public function classroom()
